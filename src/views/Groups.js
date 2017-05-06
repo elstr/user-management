@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {addItem, getById, removeItem, updateList} from '../Commons'
+import {addItem, addItems, getById, removeItem, updateList, getDiffs} from '../Commons'
 // import {Checkbox} from '../components/Checkbox'
 
 class Groups extends Component {
@@ -73,12 +73,6 @@ class Groups extends Component {
     this.setState({selectedUsers: selectedUsers})
   }
 
-  getDiffs = (list, items) => {
-    return list.filter(function(n) {
-      return items.indexOf(n) === -1;
-    });
-  }
-
   addUsers = () => {
     let addUsers,
         usersIds,
@@ -90,16 +84,13 @@ class Groups extends Component {
     usersSelectedIds = users.map(user => user.id).concat()
 
     groups.map(group => {
-      addUsers = this.getDiffs(group.users, usersSelectedIds)
-      const usersGroup = addItem(group.users, addUsers)
-      updateList(this.state.groups, group)
-      console.log(this.state.groups);
-      // this.props.updateState(state => ({
-      //   groups: [...state.groups, group]
-      // }));
-      // this.props.updateState({users: usersGroup})
+      addUsers = getDiffs(usersSelectedIds, group.users)
+      const usersGroup = addItems(group.users, addUsers)
+      group.users = usersGroup;
+      this.props.updateState(state => ({
+        groups: [...state.groups, group]
+      }));
     })
-
 
   }
 
