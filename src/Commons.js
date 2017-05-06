@@ -5,7 +5,6 @@ export const getById = (list, id) => Object.assign({}, list.find(item => item.id
 export const addItem = (list, item) => [...list, item]
 
 export const addItems =(list, items) => {
-  debugger;
   items.map(item => {
     list = addItem(list, item)
   })
@@ -28,3 +27,15 @@ export const getDiffs = (list, items) => {
     return items.indexOf(n) === -1;
   });
 }
+
+
+    // let filter = grupos.map(grupo =>
+    //               grupo.users.map(usuario => {
+    //                 return usuarios.filter(user => {
+    //                   console.log('usuario de grupo', user);
+    //                   console.log('usuario seleccionado', usuario);
+    //                   return usuario.id !== user.id
+    //                 })
+    //               })
+    //             )
+    // console.log(filter);

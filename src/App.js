@@ -11,17 +11,15 @@ class App extends Component {
     this.state = {
       users: [{id:1, name:'Lele', isActive:true},
               {id:2, name:'Emi', isActive:true},
-              {id:3, name:'Fer', isActive:true},
+              {id:3, name:'Ferlu', isActive:true},
               {id:4, name:'Bel', isActive:true}],
       groups: [{
               id:1,
               name: 'Admins',
-              // users:[{id:1},{id:2}]
               users:[1,2]
             },{
               id:2,
               name: 'Devs',
-              // users:[{id:2}]
               users:[2]
             }],
         configuration: {showUsers: false}
