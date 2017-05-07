@@ -1,6 +1,6 @@
 import React from 'react'
 import '../styles.css'
-export const List = props => {
+const List = props => {
   return(
     <ul>
     {props.list.map((item, i) =>
@@ -11,3 +11,5 @@ export const List = props => {
     </ul>
   )
 }
+
+export default List;

@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const ListItem = (props) => {
+const ListItem = (props) => {
   return(
     <li key={props.i} className={props.className}>
       <input type="checkbox" value={props.value} checked={!props.checked} onChange={props.handleCheckChange} />
@@ -8,3 +8,6 @@ export const ListItem = (props) => {
     </li>)
   )
 }
+
+
+export default ListItem;

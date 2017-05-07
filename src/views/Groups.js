@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {addItem, addItems, getById, removeItem, getDiffs} from '../Commons';
+import {addItem, addItems, getById, removeItem, getDiffs, updateList} from '../Commons';
 
 class Groups extends Component {
   constructor(props) {
@@ -68,27 +68,53 @@ class Groups extends Component {
     this.setState({selectedUsers: selectedUsers})
   }
 
+  // addUsers = () => {
+  //   let usersToAdd,
+  //       selectedUsersIds = [];
+  //
+  //   const users = this.state.selectedUsers;
+  //   const groups = [...this.state.selectedGroups];
+  //
+  //   selectedUsersIds = users.map(user => user.id).concat()
+  //
+  //   groups.map(group => {
+  //     usersToAdd = getDiffs(selectedUsersIds, group.users)
+  //     group.users = addItems(group.users, usersToAdd)
+  //   })
+  //
+  //   this.props.updateState(state => ({
+  //     groups: [...groups]
+  //   }));
+  //
+  // }
+
   addUsers = () => {
-    let usersToAdd,
-        usersSelectedIds = [];
+      let addUsers,
+          usersSelectedIds = [];
 
-    const users = this.state.selectedUsers;
-    const groups = [...this.state.selectedGroups];
+      const selectedUsers = this.state.selectedUsers;
+      const selectedGroups = [...this.state.selectedGroups];
 
-    usersSelectedIds = users.map(user => user.id).concat()
+      usersSelectedIds = selectedUsers.map(user => user.id).concat()
 
-    groups.map(group => {
-      usersToAdd = getDiffs(usersSelectedIds, group.users)
-      console.log(group.users);
-      group.users = addItems(group.users, usersToAdd)
-    })
+      selectedGroups.map(group => {
+        debugger;
+        addUsers = getDiffs(usersSelectedIds, group.users)
+        const usersGroup = addItems(group.users, addUsers)
+        group.users = usersGroup;
+      })
 
-    this.props.updateState(state => ({
-      groups: [...groups]
-    }));
+      if (selectedGroups.length > 1) {
+        this.props.updateState(state => ({
+          groups: [...selectedGroups]
+        }));
+      } else {
+        this.props.updateState(state => ({
+          groups: updateList(this.state.groups, selectedGroups[0])
+        }));
+      }
 
-  }
-
+    }
 
   render() {
     const {showUsers} = this.props.getState('configuration');
@@ -104,7 +130,7 @@ class Groups extends Component {
 
       <ul>
         {groups.map((group, i) =>
-          <li key={group.id}>
+          <li key={i}>
             <input type='checkbox' onChange={this.selectGroup} value={group.id}/> {group.name}
             {showUsers
               ? <div>

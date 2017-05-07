@@ -1,11 +1,29 @@
 import React from 'react'
 
-export const Input = (props) => {
+const Input = props => {
+  const {
+    className,
+    name,
+    onChange,
+    onKeyPress,
+    placeholder,
+    style,
+    type,
+    value,
+  } = props;
+
   return(
-  <input
-    type="text"
-    onKeyDown={props.handleKeyPress}
-    onChange={props.handleInputChange}
-    value={props.inputText}
-  />)
+    <input
+      autoFocus
+      className={className}
+      name={name}
+      onChange={onChange}
+      onKeyPress={onKeyPress}
+      placeholder={placeholder}
+      style={style}
+      type={type}
+      value={value}
+    />
+  )
 }
+export default Input;

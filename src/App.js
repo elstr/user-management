@@ -1,30 +1,31 @@
 import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 
-import Users from './views/Users';
+import {Main} from './views';
+import {UsersContainer} from './containers';
 import Groups from './views/Groups';
+import NotFound from './views/NotFound';
 
 class App extends Component {
   constructor() {
     super();
-
     this.state = {
-      users: [{id:1, name:'Lele', isActive:true},
-              {id:2, name:'Emi', isActive:true},
-              {id:3, name:'Ferlu', isActive:true},
-              {id:4, name:'Bel', isActive:true}],
-      groups: [{
-              id:1,
-              name: 'Admins',
-              users:[1,2]
-            },{
-              id:2,
-              name: 'Devs',
-              users:[2]
-            }],
-        configuration: {showUsers: false}
-      }
-    }
+        users: [{id:1, name:'Lele', isActive:true},
+                {id:2, name:'Emi', isActive:true},
+                {id:3, name:'Ferlu', isActive:true},
+                {id:4, name:'Bel', isActive:true}],
+        groups: [{
+                  id:1,
+                  name: 'Admins',
+                  users:[1,2]
+                },{
+                  id:2,
+                  name: 'Devs',
+                  users:[2]
+                }],
+          configuration: {showUsers: false}
+        }
+  }
 
   generateId = () => Math.floor(Math.random()*1000)
 
@@ -52,37 +53,32 @@ class App extends Component {
           </ul>
 
           <hr />
-
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <Users
-                getState={this.getState}
-                updateState={this.updateState}
-                generateId={this.generateId}
-              />
-            )}
-          />
-          <Route
-            path="/users"
-            render={() => (
-              <Users
-                getState={this.getState}
-                updateState={this.updateState}
-                generateId={this.generateId} />
-            )}
-          />
-          <Route
-            path="/groups"
-            render={() => (
-              <Groups
-                getState={this.getState}
-                updateState={this.updateState}
-                generateId={this.generateId}
-              />
-            )}
-          />
+      <Switch>
+        <Route
+          exact
+          path="/"
+          render={() => (
+            <Main />
+          )}
+        />
+        <Route
+          path='/users'
+          header='Users'
+          component={UsersContainer}
+          users={this.state.users}
+        />
+        <Route
+          path="/groups"
+          render={() => (
+            <Groups
+              getState={this.getState}
+              updateState={this.updateState}
+              generateId={this.generateId}
+            />
+          )}
+        />
+       <Route path="*" component={NotFound}/>
+      </Switch>
         </div>
       </Router>
     );

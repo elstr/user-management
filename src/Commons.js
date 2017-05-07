@@ -14,6 +14,7 @@ export const addItems =(list, items) => {
 export const removeItem = (list, id) => list.filter(item => item.id !== id)
 
 export const updateList = (list, item) => {
+  debugger;
   const index = findIndex(list,item.id)
   return [
     ...list.slice(0, index),
