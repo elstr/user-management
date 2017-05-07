@@ -33,8 +33,6 @@ export const getDiffs = (list, items) => {
     // let filter = grupos.map(grupo =>
     //               grupo.users.map(usuario => {
     //                 return usuarios.filter(user => {
-    //                   console.log('usuario de grupo', user);
-    //                   console.log('usuario seleccionado', usuario);
     //                   return usuario.id !== user.id
     //                 })
     //               })

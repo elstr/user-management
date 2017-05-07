@@ -1,0 +1,28 @@
+.button-success,
+.button-primary,
+.button-secondary {
+    border-radius: 4px;
+    font-family: 'Avenir', sans-serif;
+    font-size: 16px;
+    font-weight: 200;
+    height: 40px;
+    padding: 0 15px;
+}
+
+.button-success {
+    background: linear-gradient(#6EF1BB 66%, #54E08D);
+    border: none;
+    color: #4E4E4E;
+}
+
+.button-primary {
+    background: linear-gradient(#6EA5F1 60%, #548FE0);
+    border: 2px solid #F4F6F9;
+    color: white;
+}
+
+.button-secondary {
+    background-color: white;
+    border: 2px solid #F4F6F9;
+    color: #6EA5F1;
+}

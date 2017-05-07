@@ -17,11 +17,13 @@ class App extends Component {
         groups: [{
                   id:1,
                   name: 'Admins',
-                  users:[1,2]
+                  users:[1,2],
+                  isActive:true
                 },{
                   id:2,
                   name: 'Devs',
-                  users:[2]
+                  users:[],
+                  isActive:true
                 }],
           configuration: {showUsers: false}
         }

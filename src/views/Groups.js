@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
+import ButtonIcon from '../components/Button/ButtonIcon'
 import {addItem, addItems, getById, removeItem, getDiffs, updateList} from '../Commons';
-
+import {Link} from 'react-router';
+import './styles.css'
 class Groups extends Component {
   constructor(props) {
     super(props);
@@ -68,32 +70,15 @@ class Groups extends Component {
     this.setState({selectedUsers: selectedUsers})
   }
 
-  // addUsers = () => {
-  //   let usersToAdd,
-  //       selectedUsersIds = [];
-  //
-  //   const users = this.state.selectedUsers;
-  //   const groups = [...this.state.selectedGroups];
-  //
-  //   selectedUsersIds = users.map(user => user.id).concat()
-  //
-  //   groups.map(group => {
-  //     usersToAdd = getDiffs(selectedUsersIds, group.users)
-  //     group.users = addItems(group.users, usersToAdd)
-  //   })
-  //
-  //   this.props.updateState(state => ({
-  //     groups: [...groups]
-  //   }));
-  //
-  // }
-
   addUsers = () => {
       let addUsers,
           usersSelectedIds = [];
 
       const selectedUsers = this.state.selectedUsers;
       const selectedGroups = [...this.state.selectedGroups];
+
+      console.log('selectedUsers',selectedUsers);
+      console.log('selectedGroups',selectedGroups);
 
       usersSelectedIds = selectedUsers.map(user => user.id).concat()
 
@@ -116,9 +101,15 @@ class Groups extends Component {
 
     }
 
+  editGroup = (group) => {
+    debugger;
+    console.log('Edit Group', group);
+  }
+  deleteGroup = (group) => console.log('Delete Group', group);
+
   render() {
-    const {showUsers} = this.props.getState('configuration');
-    const {groups, users} = this.props.getState();
+    const {groups, users, configuration} = this.props.getState();
+    const {showUsers} = configuration;
     return (
       <div className="Groups">
         <h1>Groups</h1>
@@ -131,7 +122,27 @@ class Groups extends Component {
       <ul>
         {groups.map((group, i) =>
           <li key={i}>
-            <input type='checkbox' onChange={this.selectGroup} value={group.id}/> {group.name}
+            <input type='checkbox' onChange={this.selectGroup} value={group.id} />
+            <label>
+              {group.name}
+            </label>
+
+            <ButtonIcon
+               className='remove-button'
+               icon=' fa-pencil-square-o'
+               onClick={() => {this.editGroup(group)}}
+               type='secondary'
+             />
+
+           {!group.users || group.users.length === 0
+               ?   <ButtonIcon
+                    className="remove-button"
+                    icon='trash-o'
+                    onClick={() => {this.deleteGroup(group)}}
+                    type='secondary'
+                  />
+              : null
+             }
             {showUsers
               ? <div>
                   <ul>
