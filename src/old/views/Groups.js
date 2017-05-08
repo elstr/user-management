@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ButtonIcon from '../components/Button/ButtonIcon'
+import Message from '../components/Message/Message'
 import {addItem, addItems, getById, removeItem, getDiffs, updateList} from '../Commons';
 import {Link} from 'react-router';
 import './styles.css'
@@ -12,7 +13,8 @@ class Groups extends Component {
       users: this.props.getState('users'),
       selectedUsers: [],
       selectedGroups: [],
-      inputText:''
+      inputText:'',
+      messageText: ''
     };
 
   }
@@ -74,42 +76,66 @@ class Groups extends Component {
       let addUsers,
           usersSelectedIds = [];
 
-      const selectedUsers = this.state.selectedUsers;
+      const selectedUsers = [...this.state.selectedUsers];
       const selectedGroups = [...this.state.selectedGroups];
 
-      console.log('selectedUsers',selectedUsers);
-      console.log('selectedGroups',selectedGroups);
+      if (selectedUsers.length > 0 && selectedGroups.length > 0) {
 
-      usersSelectedIds = selectedUsers.map(user => user.id).concat()
+        usersSelectedIds = selectedUsers.map(user => user.id).concat()
 
-      selectedGroups.map(group => {
-        debugger;
-        addUsers = getDiffs(usersSelectedIds, group.users)
-        const usersGroup = addItems(group.users, addUsers)
-        group.users = usersGroup;
-      })
+        selectedGroups.map(group => {
+          addUsers = getDiffs(usersSelectedIds, group.users)
+          const usersGroup = addItems(group.users, addUsers)
+          group.users = usersGroup;
+        })
 
-      if (selectedGroups.length > 1) {
-        this.props.updateState(state => ({
-          groups: [...selectedGroups]
-        }));
+        if (selectedGroups.length > 1) {
+          this.props.updateState(state => ({
+            groups: [...selectedGroups]
+          }));
+        } else {
+          this.props.updateState(state => ({
+            groups: updateList(this.state.groups, selectedGroups[0])
+          }));
+        }
       } else {
+        this.setState({messageText: 'Please select at least one group and one user'})
         this.props.updateState(state => ({
-          groups: updateList(this.state.groups, selectedGroups[0])
+          ...state,
+          configuration: {
+            ...state.configuration,
+            showMessage: !state.configuration.showMessage
+          }
         }));
       }
 
     }
 
   editGroup = (group) => {
-    debugger;
     console.log('Edit Group', group);
   }
-  deleteGroup = (group) => console.log('Delete Group', group);
+
+  deleteGroup = (group) => {
+    const newGroup = {...group, isActive:false}
+    this.props.updateState(state => ({
+      groups: updateList(this.state.groups, newGroup)
+    }));
+  }
+
+  // pasar a message
+  closeMessage = () => {
+    this.props.updateState(state => ({
+      ...state,
+      configuration: {
+        ...state.configuration,
+        showMessage: !state.configuration.showMessage
+      }
+    }));
+  }
 
   render() {
     const {groups, users, configuration} = this.props.getState();
-    const {showUsers} = configuration;
+    const {showUsers, showMessage} = configuration;
     return (
       <div className="Groups">
         <h1>Groups</h1>
@@ -118,10 +144,23 @@ class Groups extends Component {
           onKeyDown={this.handleKeyPress}
           value={this.state.inputText}
         />
-
+      {showMessage
+        ? <div>
+            <ButtonIcon
+               className='remove-button'
+               icon='times'
+               onClick={() => {this.closeMessage()}}
+               type='secondary'
+             />
+            <p>{this.state.messageText}</p>
+          </div>
+        : null
+      }
       <ul>
         {groups.map((group, i) =>
-          <li key={i}>
+          group.isActive
+          ?
+            <li key={i}>
             <input type='checkbox' onChange={this.selectGroup} value={group.id} />
             <label>
               {group.name}
@@ -134,29 +173,36 @@ class Groups extends Component {
                type='secondary'
              />
 
-           {!group.users || group.users.length === 0
-               ?   <ButtonIcon
-                    className="remove-button"
-                    icon='trash-o'
-                    onClick={() => {this.deleteGroup(group)}}
-                    type='secondary'
-                  />
-              : null
-             }
+            {!!group.users && group.users.length === 0
+             ?  <ButtonIcon
+                  className="remove-button"
+                  icon='trash-o'
+                  onClick={() => {this.deleteGroup(group)}}
+                  type='secondary'
+                />
+             :  null
+            }
             {showUsers
               ? <div>
                   <ul>
-                    {group.users.map((userId, i) =>
-                      <li key={i}>
-                        {users.find(user => user.id === userId).name}
-                      </li>
-                    )}
+                    {group.isActive && !!group.users
+                      ?
+                        group.users.map((userId, i) =>
+                            <li key={i}>
+                              {users.find(user => user.id === userId).name}
+                            </li>
+                          )
+                      :
+                        null
+                    }
                   </ul>
                 </div>
               : null
             }
 
           </li>
+          :
+            null
         )}
       </ul>
         <button onClick={this.showUsers}>

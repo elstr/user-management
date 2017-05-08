@@ -1,0 +1,37 @@
+.alert {
+    border: 2px solid #F9F9E6;
+    border-radius: 8px;
+    padding: 30px 35px;
+    font-family: 'Avenir', sans-serif;
+    color: #5C5C5C;
+    position: relative;
+}
+
+.alert-warning {
+    background-color: #FEFEED;
+}
+
+.alert-success {
+    border: 2px solid #bdf5cc;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 14px;
+    background: #e5ffec;
+    margin-bottom: 15px;
+}
+
+.alert-remove, .alert-info {
+    position: absolute;
+    color: #EAEAD2;
+}
+
+.alert-remove {
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.alert-info {
+    top: 10px;
+    left: 10px;
+}

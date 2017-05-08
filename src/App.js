@@ -1,90 +1,67 @@
-import React, {Component} from 'react';
+import React from 'react';
 import {BrowserRouter as Router, Route, Link, Switch} from 'react-router-dom';
 
-import {Main} from './views';
-import {UsersContainer} from './containers';
-import Groups from './views/Groups';
-import NotFound from './views/NotFound';
+import Home from './components/Home';
+import Users from './containers/Users';
+import User from './containers/User';
+import CreateUsers from './containers/CreateUsers';
+import Groups from './containers/Groups';
+import CreateGroups from './containers/CreateGroups';
+import NotFound from './components/NotFound';
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-        users: [{id:1, name:'Lele', isActive:true},
-                {id:2, name:'Emi', isActive:true},
-                {id:3, name:'Ferlu', isActive:true},
-                {id:4, name:'Bel', isActive:true}],
-        groups: [{
-                  id:1,
-                  name: 'Admins',
-                  users:[1,2],
-                  isActive:true
-                },{
-                  id:2,
-                  name: 'Devs',
-                  users:[],
-                  isActive:true
-                }],
-          configuration: {showUsers: false}
-        }
-  }
-
-  generateId = () => Math.floor(Math.random()*1000)
-
-  getState = (stateKey = '') => {
-    const isStateKey = this.state.hasOwnProperty(stateKey);
-    if (isStateKey) {
-      return this.state[stateKey];
-    } else {
-      return this.state;
-    }
-  };
-
-  updateState = (cb = () => {}) => {
-    this.setState(cb);
-  };
-
+export default class App extends React.Component {
   render() {
     return (
       <Router>
         <div>
           <ul>
-            <li><Link to="/">Main</Link></li>
-            <li><Link to="/users">Users</Link></li>
-            <li><Link to="/groups">Groups</Link></li>
+            <li><Link to="/">Home</Link></li>
+            <li>
+              <Link to="/users">Users</Link>
+              <ul>
+                <li><Link to="/users/create">Create Users</Link></li>
+              </ul>
+            </li>
+            <li>
+              <Link to="/groups">Groups</Link>
+              <ul>
+                <li><Link to="/groups/create">Create Groups</Link></li>
+              </ul>
+            </li>
           </ul>
-
           <hr />
       <Switch>
         <Route
           exact
           path="/"
-          render={() => (
-            <Main />
-          )}
+          component={Home}
         />
         <Route
+          exact
           path='/users'
-          header='Users'
-          component={UsersContainer}
-          users={this.state.users}
+          component={Users}
         />
         <Route
-          path="/groups"
-          render={() => (
-            <Groups
-              getState={this.getState}
-              updateState={this.updateState}
-              generateId={this.generateId}
-            />
-          )}
+          path='/users/create'
+          component={CreateUsers}
+        />
+        <Route
+          path='/users/:name'
+          component={User}
+        />
+        <Route
+          exact
+          path='/groups'
+          component={Groups}
+        />
+        <Route
+          path='/groups/create'
+          component={CreateGroups}
         />
        <Route path="*" component={NotFound}/>
       </Switch>
         </div>
       </Router>
-    );
+    )
   }
 }
-
-export default App;
