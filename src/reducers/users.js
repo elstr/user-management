@@ -1,7 +1,11 @@
 const initialState = [{
-  name: 'lele',
-  groups: ['admin', 'dev']
+  name: 'Karen',
+  groups: [{id:1 , name:'Administrator'},{id:2 , name:'Developer'}]
+}, {
+  name: 'Andres',
+  groups: [{id:1 , name:'Administrator'},{id:2 , name:'Developer'}]
 }]
+
 
 export default function users(state = initialState, action) {
   switch (action.type) {
@@ -18,6 +22,13 @@ export default function users(state = initialState, action) {
       return [
         ...state.slice(0, idx),
         ...state.slice(idx + 1)
+      ]
+    }
+    case 'EDIT_USER': {
+      return [
+        ...state.slice(0, action.idx),
+        action.editedUser,
+        ...state.slice(action.idx + 1)
       ]
     }
     default:

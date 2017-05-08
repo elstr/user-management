@@ -5,10 +5,14 @@ export default class Home extends React.Component {
     return (
       <div>
         <h1>User Management System</h1>
-        <p>This system provides the functionalities to manage users and groups.</p>
+        <p>Small system to manage users and groups.</p>
+        <p>Relies on ReactJS & Redux. For testing I'm using Enzyme.</p>
+
+        <hr />
+
         <p>Functionalities covered:</p>
-        <ul>
-          <li>List exissting users</li>
+        <ul className='features-list'>
+          <li>List existing users</li>
           <li>List existing groups</li>
           <li>Create users</li>
           <li>Create groups</li>
@@ -17,8 +21,7 @@ export default class Home extends React.Component {
           <li>Delete groups when they no longer have members</li>
           <li>Delete users</li>
         </ul>
-        <p>Relies on ReactJS & Redux</p>
-        <p>For testing I'm using Enzyme</p>
+        <br />
         <p>Built by Eleonora Lester</p>
       </div>
     )

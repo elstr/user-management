@@ -64,7 +64,7 @@ export default class App extends React.Component {
                   component={CreateGroups}
                 />
                 <Route
-                  path='/groups/:name'
+                  path='/groups/:id'
                   component={Group}
                 />
                <Route path="*" component={NotFound}/>

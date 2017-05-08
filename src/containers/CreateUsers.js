@@ -2,12 +2,11 @@ import React from 'react';
 import {connect} from 'react-redux';
 
 import {addUser} from '../actions/createUsers';
-
+import Button from '../components/Button/Button'
 class CreateUsers extends React.Component {
 
   constructor() {
     super();
-
     this.state = {
       newUser: {
         name: '',
@@ -94,30 +93,37 @@ class CreateUsers extends React.Component {
         <h2>Add User</h2>
         <label>
           Name:
-          <input type="text"
-            value={newUser.name}
-            onChange={this.handleChangeUserInput}
-             />
-
-           <h3>Assign group</h3>
-           <ul>
-             {groups.map((group, i) => (
-               <li key={i}>
-                 <label>
-                   {group}
-                   <input
-                     type="checkbox"
-                     onChange={ e => this.handleGroupChange(e, group)}
-                     checked={this.isGroupAssigned(group)}
-                     />
-                 </label>
-                 </li>
-             ))}
-           </ul>
         </label>
-        <button onClick={() => this.addUser(newUser)}>
-          Add User
-        </button>
+        <input type="text"
+          value={newUser.name}
+          onChange={this.handleChangeUserInput}
+        />
+      <h3>Assign Groups</h3>
+        <table>
+          <tbody>
+          <tr>
+            <th>Name</th>
+            <th>Assign</th>
+          </tr>
+          {this.props.groups.map((group, i) => (
+            <tr key={i}>
+              <td>
+                {group.name}
+              </td>
+              <td>
+                 <input
+                   type="checkbox"
+                   onChange={ e => this.handleGroupChange(e, group)}
+                   checked={this.isGroupAssigned(group)}
+                   />
+               </td>
+             </tr>
+             ))}
+           </tbody>
+        </table>
+        <div className='button-container'>
+          <Button label={'Add User'} onClick={() => this.addUser(newUser)} />
+        </div>
       </section>
     )
   }
