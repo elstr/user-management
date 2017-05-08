@@ -1,5 +1,5 @@
 # User Management System
-This is a small user and groups management system.
+This is a small users and groups management system.
 Relies on ReactJS & Redux. For testing I'm using Enzyme.
 
 ## Usage
@@ -13,7 +13,8 @@ And
 ## Folder Structure
 ```
 src/
-	├──  __tests__
+
+	├─── __tests__
   |	  └── Buton.test.js
 	├── actions
   |   ├── createGroups.js
