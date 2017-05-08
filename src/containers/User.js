@@ -90,6 +90,7 @@ class User extends React.Component {
     const user = this.getUser(userName)[0];
     const idx = this.props.users.indexOf(user);
     this.props.editUser(idx, editedUser);
+    this.cleanEditedUser();
   }
 
   render() {

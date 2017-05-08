@@ -9,26 +9,50 @@ class CreateGroups extends React.Component {
     super();
 
     this.state = {
-      newGroup: ''
+      newGroup: {
+        id:'',
+        name:''
+      }
     };
   }
 
   handleChangeGroupInput = e => {
     const {value} = e.target;
-    this.setState({
-      newGroup: value
-    });
+    this.setState(state => ({
+      ...state,
+      newGroup: {
+        ...state.newGroup,
+        name: value
+      }
+    }))
   }
+
 
   cleanNewGroup = () => {
     this.setState({
-      newGroup: ''
+      newGroup: {
+        id:'',
+        name: ''
+      }
     })
   }
 
+
   addGroup(group) {
-    this.props.addGroup(group);
-    this.cleanNewGroup();
+    const {groups} = this.props;
+    const getLastId = (groups[groups.length - 1].id)+1;
+    this.setState(state => ({
+      ...state,
+      newGroup: {
+        ...state.newGroup,
+        id: getLastId,
+        name: group.name,
+      }
+    }), () => {
+      this.props.addGroup(this.state.newGroup);
+      this.cleanNewGroup();
+    })
+
   }
 
   render() {
@@ -39,11 +63,12 @@ class CreateGroups extends React.Component {
         <h2>Add Group</h2>
         <label>
           Group Name:
-          <input type="text"
-            value={newGroup}
-            onChange={this.handleChangeGroupInput}
-             />
         </label>
+          <input type="text"
+            value={newGroup.name}
+            onChange={this.handleChangeGroupInput}
+          />
+
         <button onClick={() => this.addGroup(newGroup)}>
           Add Group
         </button>
@@ -52,7 +77,9 @@ class CreateGroups extends React.Component {
   }
 }
 
-const mapStateToProps = state => ({})
+const mapStateToProps = state => ({
+  groups: state.groups
+})
 
 const mapDispatchToProps = dispatch => ({
     addGroup: group => dispatch(addGroup(group))
