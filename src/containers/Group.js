@@ -2,7 +2,6 @@ import React from 'react';
 import {connect} from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-
 import './styles.css';
 
 import {editGroup} from '../actions/groups';
@@ -46,46 +45,53 @@ class Group extends React.Component {
       const {groups} = this.props;
       const idx = groups.indexOf(group);
 
-      if (!!editedGroup) {
-
+      if (editedGroup.name) {
+        debugger;
         this.setState(state => ({
           ...state,
           editedGroup: {
             ...state.editedGroup,
             id: +groupId
-          }
+          },
+          showMessage: !this.state.showMessage
         }), () => {
           this.props.editGroup(idx, this.state.editedGroup)
           this.cleanEditedGroup();
         })
-
-
-      } else {
-        // mostras mensaje
       }
-
     }
 
   render() {
     const group = this.getGroup(this.props.match.params.id);
+    const {editedGroup} = this.state;
     return (
-            <div>
-              <h2>Group: {group.name}</h2>
-              <label>Name: {group.name} </label>
-              <hr />
-              <div>
-                <h3>Update with value:</h3>
-                <label>New name:</label>
-                <input type="text" onChange={this.handleChangeGroupInput} value={this.state.editedGroup.name}/>
-              </div>
-              <div className="button-container">
-                <button style={{padding :8}}  onClick={() => this.editGroup(this.state.editedGroup)}>
-                  Save
-                </button>
-              </div>
-            </div>
-        )
-      }
+          <div>
+            { group
+              ?
+              (
+                <div>
+                  <h2>Group: {group.name}</h2>
+                  <label>Name: {group.name} </label>
+                  <hr />
+                  <div>
+                    <h3>Update with value:</h3>
+                    <label>New name:</label>
+                    <input type="text" onChange={this.handleChangeGroupInput} value={editedGroup.name}/>
+                  </div>
+                  <div className="button-container">
+                    <button style={{padding :8}}  onClick={() => this.editGroup(editedGroup)}>
+                      Save
+                    </button>
+                  </div>
+                </div>
+              )
+              : <Redirect to={{
+                    pathname: '/groups'
+                  }}/>
+            }
+          </div>
+    )
+    }
 }
 
 const mapStateToProps = state => ({
