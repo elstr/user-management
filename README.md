@@ -9,6 +9,7 @@ Install all the dependencies running the following command
 
 ## Expected API
 * 	`/users`
+
 This endpoind expects a JSON array of objects
 and returns a list of users and the groups the user has assigned
 
@@ -24,7 +25,10 @@ and returns a list of users and the groups the user has assigned
 ```
 
 
+
+
 * `/groups`  
+
 This endpoind expects a JSON array of objects
 and returns a list of groups
 
