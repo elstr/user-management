@@ -35,7 +35,7 @@ and returns a list of groups
 #### Example of JSON structure expected
 ```
 [
-	{id:1,name:'Administrator'},
+	{id:1, name:'Administrator'},
 	{id:2, name:'Developer'}
 ]
 ```
