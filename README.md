@@ -21,10 +21,10 @@ and returns a list of users and the groups the user has assigned
 ```
 [{
   name: 'Karen',
-  groups: [{id:1 , name:'Administrator'},{id:2 , name:'Developer'}]
+  groups: [{id:1},{id:2}]
 }, {
   name: 'Andres',
-  groups: [{id:1 , name:'Administrator'},{id:2 , name:'Developer'}]
+  groups: [{id:1},{id:2}]
 }]
 ```
 
