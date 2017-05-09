@@ -21,8 +21,12 @@ input{
   margin: 0 20px;
 }
 
-
 .button-container{
   float: right;
   margin-top: 40px;
+}
+
+.ul-bulleted{
+  list-style: circle;
+  padding-left: 40px;
 }

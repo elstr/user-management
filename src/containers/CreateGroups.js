@@ -39,19 +39,26 @@ class CreateGroups extends React.Component {
 
 
   addGroup(group) {
-    const {groups} = this.props;
-    const getLastId = (groups[groups.length - 1].id)+1;
-    this.setState(state => ({
-      ...state,
-      newGroup: {
-        ...state.newGroup,
-        id: getLastId,
-        name: group.name,
+    if (group.name) {
+      let getLastId = 1;
+      const {groups} = this.props;
+      if (groups.length) {
+        getLastId = (groups[groups.length - 1].id)+1;
       }
-    }), () => {
-      this.props.addGroup(this.state.newGroup);
-      this.cleanNewGroup();
-    })
+
+      this.setState(state => ({
+        ...state,
+        newGroup: {
+          ...state.newGroup,
+          id: getLastId,
+          name: group.name,
+        }
+      }), () => {
+        this.props.addGroup(this.state.newGroup);
+        this.cleanNewGroup();
+      })
+    }
+
 
   }
 

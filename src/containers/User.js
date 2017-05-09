@@ -17,6 +17,7 @@ class User extends React.Component {
       }
     }
   }
+
   getUser = name => {
     const {users} = this.props;
     return users.filter(user => user.name === name)
@@ -35,7 +36,6 @@ class User extends React.Component {
 
   isGroupAssigned = group => {
     const {groups} = this.state.editedUser;
-    console.log(groups.indexOf(group));
     return groups.indexOf(group) !== -1;
   }
 
@@ -89,8 +89,21 @@ class User extends React.Component {
     const userName = this.props.match.params.name;
     const user = this.getUser(userName)[0];
     const idx = this.props.users.indexOf(user);
-    this.props.editUser(idx, editedUser);
-    this.cleanEditedUser();
+    if (editedUser.name !== '') {
+      this.props.editUser(idx, editedUser);
+      this.cleanEditedUser();
+    } else {
+      this.setState(state => ({
+        ...state,
+        editedUser: {
+          ...state.editedUser,
+          name: userName
+        }
+      }), () => {
+        this.props.editUser(idx, this.state.editedUser);
+        this.cleanEditedUser();
+      })
+    }
   }
 
   render() {
@@ -106,13 +119,13 @@ class User extends React.Component {
             <div>
               <h1>User: {user.name}</h1>
               <label>Name: {user.name} </label>
-              <div>
+              <div style={{marginTop: 20}}>
                 <label>Groups Assigned:</label>
-                  <ul>
+                  <ul className="ul-bulleted">
                     {user.groups && user.groups.map((group, i) => (
                       <li key={i}>
                         <label>
-                          {group.name}
+                          {groups.find(grp => grp.id === group.id).name}
                         </label>
                         </li>
                     ))}
@@ -125,37 +138,41 @@ class User extends React.Component {
                 <input type="text" onChange={this.handleChangeUserInput} value={editedUser.name}/>
                 <div>
                   <h4>Assign Groups:</h4>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <th>Group</th>
-                        <th>Assign</th>
-                      </tr>
-                      {groups.map((group, i) => (
-                        <tr key={i}>
-                          <td>
-                            <label>
-                              {group.name}
-                            </label>
-                          </td>
-                          <td>
-                            <input
-                              type="checkbox"
-                              onChange={ e => this.handleGroupChange(e, group)}
-                              checked={this.isGroupAssigned(group)}
-                              />
-                          </td>
+                  {groups.length > 0
+                    ?
+                      <table>
+                      <tbody>
+                        <tr>
+                          <th>Group</th>
+                          <th>Assign</th>
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
+                        {groups.map((group, i) => (
+                          <tr key={i}>
+                            <td>
+                              <label>
+                                {group.name}
+                              </label>
+                            </td>
+                            <td>
+                              <input
+                                type="checkbox"
+                                onChange={ e => this.handleGroupChange(e, group)}
+                                checked={this.isGroupAssigned(group)}
+                                />
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    : <div><p>Sorry... currently there are no groups to assign</p></div>
+                  }
+
                 </div>
                 <div className="button-container">
                   <button style={{padding :8}} onClick={() => this.editUser(editedUser)}>
                     Save
                   </button>
                 </div>
-
               </div>
             </div>
           ) : <Redirect to={{

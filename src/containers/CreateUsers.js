@@ -80,8 +80,11 @@ class CreateUsers extends React.Component {
   }
 
   addUser(newUser) {
-    this.props.addUser(newUser);
-    this.cleanNewUser();
+    if (newUser.name !== '') {
+      this.props.addUser(newUser);
+      this.cleanNewUser();
+    }
+
   }
 
   render() {
@@ -99,13 +102,15 @@ class CreateUsers extends React.Component {
           onChange={this.handleChangeUserInput}
         />
       <h3>Assign Groups</h3>
+      {groups.length
+      ?
         <table>
           <tbody>
           <tr>
             <th>Name</th>
             <th>Assign</th>
           </tr>
-          {this.props.groups.map((group, i) => (
+          {groups.map((group, i) => (
             <tr key={i}>
               <td>
                 {group.name}
@@ -121,6 +126,9 @@ class CreateUsers extends React.Component {
              ))}
            </tbody>
         </table>
+      : <div><p>Sorry... currently there are no groups to assign</p></div>
+      }
+
         <div className='button-container'>
           <Button label={'Add User'} onClick={() => this.addUser(newUser)} />
         </div>

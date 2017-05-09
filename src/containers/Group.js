@@ -46,14 +46,12 @@ class Group extends React.Component {
       const idx = groups.indexOf(group);
 
       if (editedGroup.name) {
-        debugger;
         this.setState(state => ({
           ...state,
           editedGroup: {
             ...state.editedGroup,
             id: +groupId
-          },
-          showMessage: !this.state.showMessage
+          }
         }), () => {
           this.props.editGroup(idx, this.state.editedGroup)
           this.cleanEditedGroup();

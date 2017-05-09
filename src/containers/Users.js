@@ -7,12 +7,12 @@ import './styles.css'
 
 class Users extends React.Component {
   render() {
-    const {groups} = this.props;
-    const {users} = this.props;
+    const {groups, users} = this.props;
+
     return (
       <div>
         <h1>Users</h1>
-        { this.props.users.length !== 0
+        { users.length !== 0
           ?
             <table>
               <tbody>
@@ -36,10 +36,7 @@ class Users extends React.Component {
                                 groups.find(grp => grp.id === group.id).name
                               }
                             </li>
-
                           ))
-
-
                         }
                       </ul>
                     </td>
