@@ -52,6 +52,7 @@ To start the aplication run
 `npm run start`
 
 
+To test the aplication run
 `npm run test`
 
 
