@@ -3,8 +3,8 @@ This is a small user and groups management system.
 Relies on ReactJS & Redux. For testing I'm using Enzyme.
 
 ## Live demo powered by Now.js
+  https://users-management-erouolpzok.now.sh
 
- https://users-management-qncfkcamhq.now.sh
 
 ## Usage
 ### Instalation
@@ -75,7 +75,7 @@ Create a group
 ` http://localhost:3000/groups/create `
 
 
-### Experience developing the app and next steps
+## Experience developing the app and next steps
 I started developing this app managing the state without Redux, building a high level state at App.js
 After a few days of developing I realized that managing the state this way was hard, it was difficult to send state to components and update state, so I started over…
 
