@@ -3,7 +3,7 @@ This is a small user and groups management system.
 Relies on ReactJS & Redux. For testing I'm using Enzyme.
 
 ## Live demo powered by Now.js
-  https://users-management-erouolpzok.now.sh
+  https://users-management-icxjcxesnl.now.sh
 
 
 ## Usage
@@ -51,28 +51,43 @@ To start the aplication run
 
 `npm run start`
 
-
 To test the aplication run
 `npm run test`
+
+For dev enviornment
+
+`npm run dev`
+
+For production
+
+`npm run start`
+
+
 
 
 ## CurrentAPI
 List all users
+
 ` http://localhost:3000/users `
 
 Create user
+
 ` http://localhost:3000/users/create `
 
 Edit User
+
 ` http://localhost:3000/users/Karen `
 
 List all groups
+
 ` http://localhost:3000/groups `
 
 Edit group
+
 ` http://localhost:3000/groups/1 `
 
 Create a group
+
 ` http://localhost:3000/groups/create `
 
 
