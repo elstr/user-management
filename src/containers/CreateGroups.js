@@ -56,6 +56,7 @@ class CreateGroups extends React.Component {
       }), () => {
         this.props.addGroup(this.state.newGroup);
         this.cleanNewGroup();
+        this.props.history.push('/groups')
       })
     }
 

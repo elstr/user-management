@@ -83,6 +83,7 @@ class CreateUsers extends React.Component {
     if (newUser.name !== '') {
       this.props.addUser(newUser);
       this.cleanNewUser();
+      this.props.history.push('/users')
     }
 
   }

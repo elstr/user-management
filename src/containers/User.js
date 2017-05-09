@@ -1,7 +1,5 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { Redirect } from 'react-router-dom'
-
 
 import './styles.css'
 
@@ -9,11 +7,12 @@ import {editUser} from '../actions/users';
 
 class User extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      editedUser: Object.assign({}, this.getUser(this.props.match.params.name)[0])
+      user: this.props.user
     }
   }
+
 
   getUser = name => {
     const {users} = this.props;
@@ -24,31 +23,26 @@ class User extends React.Component {
     const {value} = e.target;
     this.setState(state => ({
       ...state,
-      editedUser: {
-        ...state.editedUser,
+      user: {
+        ...state.user,
         name: value
       }
     }))
   }
 
   isGroupAssigned = group => {
-    const {groups} = this.state.editedUser;
+    const {groups} = this.state.user;
     return groups.indexOf(group) !== -1;
   }
 
   doesUserHaveGroup = group => {
-    const {editedUser} = this.state;
-    let groupAssigned = editedUser.groups.find(grp => grp.id === group.id)
-
-    if (groupAssigned) {
-      return true
-    }
-    return false
+    const {groups} = this.state.user;
+    return !!groups.filter(g => g.id === group.id).length
 
   }
 
   handleGroupChange = (e, group) => {
-    debugger;
+
     const {checked} = e.target;
     if (checked) {
       this.addGroupToUser(group)
@@ -58,16 +52,16 @@ class User extends React.Component {
   }
 
   removeGroupFromUser = (group = '') => {
-    debugger;
-    const {groups} = this.state.editedUser;
+
+    const {groups} = this.state.user;
     // const idx = groups.indexOf(group.id);
     const idx = groups.indexOf(groups.find(grp => grp.id === group.id))
 
     if (idx !== -1) {
       this.setState(state => ({
         ...state,
-        editedUser: {
-          ...state.editedUser,
+        user: {
+          ...state.user,
           groups: [
             ...groups.slice(0, idx),
             ...groups.slice(idx + 1)
@@ -80,125 +74,109 @@ class User extends React.Component {
   addGroupToUser = (group = '') => {
     this.setState(state => ({
       ...state,
-      editedUser: {
-        ...state.editedUser,
-        groups: [...state.editedUser.groups, group]
+      user: {
+        ...state.user,
+        groups: [...state.user.groups, group]
       }
     }))
   }
 
-  cleanEditedUser = () => {
-    this.setState({
-      editedUser: {
-        name: '',
-        groups: []
-      }
-    })
-  }
-
-  editUser(editedUser) {
-    const userName = this.props.match.params.name;
-    const user = this.getUser(userName)[0];
-    const idx = this.props.users.indexOf(user);
-    if (editedUser.name !== '') {
-      this.props.editUser(idx, editedUser);
-      this.cleanEditedUser();
-    } else {
-      this.setState(state => ({
-        ...state,
-        editedUser: {
-          ...state.editedUser,
-          name: userName
-        }
-      }), () => {
-        this.props.editUser(idx, this.state.editedUser);
-        this.cleanEditedUser();
-      })
+  editUser = () => {
+    if (this.state.user.name !== '') {
+      const idx = this.props.users.indexOf(this.props.user);
+      this.props.editUser(idx, this.state.user);
+      this.props.history.push('/users')
     }
   }
 
   render() {
-    const userName = this.props.match.params.name;
-    const user = this.getUser(userName)[0];
-    const {groups} = this.props;
-    const {editedUser} = this.state;
+
+    const {user, groups} = this.props;
 
     return (
       <div>
         {
-          user ? (
+          <div>
+            <h1>User: {user.name}</h1>
+            <label>Name: {user.name} </label>
+            <div style={{marginTop: 20}}>
+              <label>Groups Assigned:</label>
+                <ul className="ul-bulleted">
+                  {user.groups && user.groups.map((group, i) => (
+                    <li key={i}>
+                      <label>
+                        {groups.find(grp => grp.id === group.id).name}
+                      </label>
+                      </li>
+                  ))}
+                </ul>
+            </div>
+            <hr />
             <div>
-              <h1>User: {user.name}</h1>
-              <label>Name: {user.name} </label>
-              <div style={{marginTop: 20}}>
-                <label>Groups Assigned:</label>
-                  <ul className="ul-bulleted">
-                    {user.groups && user.groups.map((group, i) => (
-                      <li key={i}>
-                        <label>
-                          {groups.find(grp => grp.id === group.id).name}
-                        </label>
-                        </li>
-                    ))}
-                  </ul>
-              </div>
-              <hr />
-              <div>
-                <h3>Update with values:</h3>
-                <label>New name:</label>
-                <input type="text" onChange={this.handleChangeUserInput} value={editedUser.name}/>
-                <div>
-                  <h4>Assign Groups:</h4>
-                  {groups.length > 0
-                    ?
-                      <table>
-                      <tbody>
-                        <tr>
-                          <th>Group</th>
-                          <th>Assign</th>
-                        </tr>
-                        {groups.map((group, i) => (
-                          <tr key={i}>
-                            <td>
-                              <label>
-                                {group.name}
-                              </label>
-                            </td>
-                            <td>
-                              <input
-                                type="checkbox"
-                                onChange={ e => this.handleGroupChange(e, group)}
-                                checked={this.doesUserHaveGroup(group)}
-                                />
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    : <div><p>Sorry... currently there are no groups to assign</p></div>
-                  }
+              <h3>Update with values:</h3>
+              <label>New name:</label>
+              <input type="text" onChange={this.handleChangeUserInput} value={this.state.user.name}/>
 
-                </div>
-                <div className="button-container">
-                  <button style={{padding :8}} onClick={() => this.editUser(editedUser)}>
-                    Save
-                  </button>
-                </div>
+              <div>
+                <h4>Assign Groups:</h4>
+                {groups.length > 0
+                  ?
+                    <table>
+                    <tbody>
+                      <tr>
+                        <th>Group</th>
+                        <th>Assign</th>
+                      </tr>
+
+                      {groups.map((group, i) => (
+                        <tr key={i}>
+                          <td>
+                            <label>
+                              {group.name}
+                            </label>
+                          </td>
+                          <td>
+                            <input
+                              type="checkbox"
+                              onChange={ e => this.handleGroupChange(e, group)}
+                              defaultChecked={this.doesUserHaveGroup(group)}
+                              />
+                          </td>
+                        </tr>
+                      ))}
+
+                    </tbody>
+                  </table>
+                  : <div><p>Sorry... currently there are no groups to assign</p></div>
+                }
+
+              </div>
+              <div className="button-container">
+                <button style={{padding : 8}} onClick={this.editUser}>
+                  Save
+                </button>
               </div>
             </div>
-          ) : <Redirect to={{
-                pathname: '/users'
-              }}/>
+          </div>
         }
       </div>
     )
   }
 }
 
-const mapStateToProps = state => ({
-  users: state.users,
-  groups: state.groups
-})
+
+const getUser = (name, users) => {
+  return users.filter(user => user.name === name)
+}
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    users: state.users,
+    user: getUser(ownProps.match.params.name, state.users)[0],
+    groups: state.groups
+  };
+}
+
 const mapDispatchToProps = dispatch => ({
     editUser: (idx, editedUser) => dispatch(editUser(idx, editedUser))
 })

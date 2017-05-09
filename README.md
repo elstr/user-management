@@ -3,8 +3,8 @@ This is a small user and groups management system.
 Relies on ReactJS & Redux. For testing I'm using Enzyme.
 
 ## Live demo powered by Now.js
-  https://users-management-icxjcxesnl.now.sh
 
+  https://users-management-xlgpheumid.now.sh
 
 ## Usage
 ### Instalation
