@@ -8,13 +8,10 @@ import './styles.css'
 import {editUser} from '../actions/users';
 
 class User extends React.Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      editedUser: {
-        name:'',
-        groups:[]
-      }
+      editedUser: Object.assign({}, this.getUser(this.props.match.params.name)[0])
     }
   }
 
@@ -39,7 +36,19 @@ class User extends React.Component {
     return groups.indexOf(group) !== -1;
   }
 
+  doesUserHaveGroup = group => {
+    const {editedUser} = this.state;
+    let groupAssigned = editedUser.groups.find(grp => grp.id === group.id)
+
+    if (groupAssigned) {
+      return true
+    }
+    return false
+
+  }
+
   handleGroupChange = (e, group) => {
+    debugger;
     const {checked} = e.target;
     if (checked) {
       this.addGroupToUser(group)
@@ -49,8 +58,10 @@ class User extends React.Component {
   }
 
   removeGroupFromUser = (group = '') => {
+    debugger;
     const {groups} = this.state.editedUser;
-    const idx = groups.indexOf(group);
+    // const idx = groups.indexOf(group.id);
+    const idx = groups.indexOf(groups.find(grp => grp.id === group.id))
 
     if (idx !== -1) {
       this.setState(state => ({
@@ -157,7 +168,7 @@ class User extends React.Component {
                               <input
                                 type="checkbox"
                                 onChange={ e => this.handleGroupChange(e, group)}
-                                checked={this.isGroupAssigned(group)}
+                                checked={this.doesUserHaveGroup(group)}
                                 />
                             </td>
                           </tr>
